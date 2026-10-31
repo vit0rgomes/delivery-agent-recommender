@@ -1,22 +1,7 @@
-"""
-Catálogo de Dados Sintéticos (Golden Dataset) para o Sistema de Recomendação.
-
-Contém 8 restaurantes e 19 pratos estrategicamente desenhados para testar:
-1. Cozinhas 100% dedicadas sem glúten (Seguras para Celíacos - CERTIFIED_FREE).
-2. "Pegadinhas" de cardápio: pratos com nome "sem glúten", mas com contaminação cruzada na chapa/fritadeira (TRACES_POSSIBLE).
-3. Alérgenos ocultos nos ingredientes (ex: molho shoyu com trigo, pasta de amendoim, camarão, lactose).
-4. Restrições operacionais e logísticas do iFood (restaurante fechado, prato esgotado, distância longa, orçamento e tempo de entrega).
-"""
-
 from delivery_agent.domain.models import DishItem, GlutenSafetyLevel, Restaurant
 
 
-# ==============================================================================
-# LISTA DE RESTAURANTES (8 Perfis Operacionais e Sanitários Distintos)
-# ==============================================================================
-
 RESTAURANTS: list[Restaurant] = [
-    # 1. O Restaurante 100% Dedicado (Caminho Feliz para Celíacos)
     Restaurant(
         id="rest_01",
         name="Raiz Livre - Cozinha 100% Sem Glúten",
@@ -33,7 +18,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Saudável", "Brasileira", "Sem Glúten"],
     ),
-    # 2. A "Pegadinha" Clássica (Hamburgueria comum com opção de pão sem glúten)
     Restaurant(
         id="rest_02",
         name="Brasa & Burger Artesanal",
@@ -49,7 +33,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Hamburgueria", "Lanches", "Americana"],
     ),
-    # 3. Culinária Asiática (Onde mora o perigo oculto do Shoyu com trigo)
     Restaurant(
         id="rest_03",
         name="Bento & Bowl - Poke e Culinária Asiática",
@@ -65,7 +48,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Japonesa", "Havaiana", "Poke", "Asiática"],
     ),
-    # 4. Vegano e 100% Sem Glúten/Lactose (Mas com oleaginosas/amendoim)
     Restaurant(
         id="rest_04",
         name="Verde Vivo - Plant-Based & Gluten Free",
@@ -81,7 +63,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Vegana", "Vegetariana", "Saudável", "Sem Glúten"],
     ),
-    # 5. Trattoria Italiana Tradicional (Farinha em suspensão no ambiente)
     Restaurant(
         id="rest_05",
         name="Nonna Mia Trattoria",
@@ -97,7 +78,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Italiana", "Massas"],
     ),
-    # 6. Bistrô Celíaco Gourmet (100% Seguro, porém Longe, Demorado e Caro)
     Restaurant(
         id="rest_06",
         name="Empório Celíaco Gourmet",
@@ -113,7 +93,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Contemporânea", "Frutos do Mar", "Sem Glúten", "Gourmet"],
     ),
-    # 7. Marmitaria Rápida e Barata (Ingredientes naturais, cozinha compartilhada)
     Restaurant(
         id="rest_07",
         name="Fit Express Marmitaria",
@@ -129,7 +108,6 @@ RESTAURANTS: list[Restaurant] = [
         ),
         cuisine_type=["Marmita", "Fitness", "Brasileira", "Saudável"],
     ),
-    # 8. Pizzaria 100% Sem Glúten, mas FECHADA no momento (Teste de status is_open=False)
     Restaurant(
         id="rest_08",
         name="Forno D'Oro - Pizzaria Sem Glúten",
@@ -137,22 +115,15 @@ RESTAURANTS: list[Restaurant] = [
         delivery_time_min=35,
         delivery_fee=6.00,
         distance_km=3.0,
-        is_open=False,  # <-- FECHADO! O agente nunca deve recomendar restaurantes fechados.
+        is_open=False,
         is_dedicated_gluten_free=True,
-        safety_protocols=(
-            "Pizzaria exclusiva sem glúten e sem lactose. Forno dedicado."
-        ),
+        safety_protocols="Pizzaria exclusiva sem glúten e sem lactose. Forno dedicado.",
         cuisine_type=["Pizzaria", "Italiana", "Sem Glúten"],
     ),
 ]
 
 
-# ==============================================================================
-# LISTA DE PRATOS DO CARDÁPIO (19 Itens cobrindo todos os cenários)
-# ==============================================================================
-
 DISHES: list[DishItem] = [
-    # --- Pratos do rest_01: Raiz Livre (100% Seguro para Celíacos) ---
     DishItem(
         id="dish_01",
         restaurant_id="rest_01",
@@ -184,7 +155,7 @@ DISHES: list[DishItem] = [
         gluten_safety=GlutenSafetyLevel.CERTIFIED_FREE,
         cross_contamination_note=None,
         ingredients=["farinha de arroz", "fécula de batata", "psyllium", "tomate pelati", "queijo muçarela zero lactose", "manjericão"],
-        allergens=["leite"],  # Zero lactose, mas ainda contém proteína do leite (caseína)
+        allergens=["leite"],
         tags=["sem_gluten", "zero_lactose", "pizza", "vegetariano"],
     ),
     DishItem(
@@ -201,8 +172,6 @@ DISHES: list[DishItem] = [
         allergens=["peixe"],
         tags=["sem_gluten", "sem_lactose", "jantar_leve", "low_carb", "saudavel"],
     ),
-
-    # --- Pratos do rest_02: Brasa & Burger (A Pegadinha da Contaminação Cruzada) ---
     DishItem(
         id="dish_04",
         restaurant_id="rest_02",
@@ -248,8 +217,6 @@ DISHES: list[DishItem] = [
         allergens=["glúten", "trigo", "leite", "ovo"],
         tags=["hamburguer", "bacon"],
     ),
-
-    # --- Pratos do rest_03: Bento & Bowl (Asiático: Opção Tamari vs Perigo do Shoyu) ---
     DishItem(
         id="dish_07",
         restaurant_id="rest_03",
@@ -285,7 +252,7 @@ DISHES: list[DishItem] = [
         id="dish_09",
         restaurant_id="rest_03",
         name="Yakisoba Tradicional de Frango e Legumes",
-        description="Macarrão oriental frito com tiras de frango, brócolis, acelerada e molho à base de shoyu.",
+        description="Macarrão oriental frito com tiras de frango, brócolis, acelga e molho à base de shoyu.",
         price=39.90,
         category="Prato Principal",
         is_available=True,
@@ -295,8 +262,6 @@ DISHES: list[DishItem] = [
         allergens=["glúten", "trigo", "soja", "gergelim"],
         tags=["japonesa", "massa"],
     ),
-
-    # --- Pratos do rest_04: Verde Vivo (100% Sem Glúten e Vegano, mas atenção a Amendoim/Castanhas) ---
     DishItem(
         id="dish_10",
         restaurant_id="rest_04",
@@ -345,8 +310,6 @@ DISHES: list[DishItem] = [
         allergens=["castanhas", "oleaginosas"],
         tags=["sem_gluten", "sem_lactose", "vegano", "brasileira"],
     ),
-
-    # --- Pratos do rest_05: Nonna Mia Trattoria (Italiana com farinha no ar) ---
     DishItem(
         id="dish_13",
         restaurant_id="rest_05",
@@ -378,8 +341,6 @@ DISHES: list[DishItem] = [
         allergens=["glúten", "trigo", "leite", "ovo"],
         tags=["italiana", "massa"],
     ),
-
-    # --- Pratos do rest_06: Empório Celíaco Gourmet (100% Seguro, mas Caro e Demorado) ---
     DishItem(
         id="dish_15",
         restaurant_id="rest_06",
@@ -408,8 +369,6 @@ DISHES: list[DishItem] = [
         allergens=[],
         tags=["sem_gluten", "sem_lactose", "gourmet"],
     ),
-
-    # --- Pratos do rest_07: Fit Express Marmitaria (Barato e Rápido, mais item Esgotado) ---
     DishItem(
         id="dish_17",
         restaurant_id="rest_07",
@@ -431,15 +390,13 @@ DISHES: list[DishItem] = [
         description="Omelete leve rica em proteínas sem farinha e sem lactose.",
         price=24.00,
         category="Prato Principal",
-        is_available=False,  # <-- ESGOTADO! O agente nunca deve recomendar pratos indisponíveis.
+        is_available=False,
         gluten_safety=GlutenSafetyLevel.TRACES_POSSIBLE,
         cross_contamination_note="Preparado em cozinha compartilhada.",
         ingredients=["clara de ovo", "espinafre", "tomate seco", "orégano"],
         allergens=["ovo"],
         tags=["sem_lactose", "low_carb", "jantar_leve", "barato"],
     ),
-
-    # --- Pratos do rest_08: Forno D'Oro (Pizzaria 100% Sem Glúten, mas Restaurante FECHADO) ---
     DishItem(
         id="dish_19",
         restaurant_id="rest_08",
@@ -456,15 +413,8 @@ DISHES: list[DishItem] = [
     ),
 ]
 
-
-# ==============================================================================
-# FUNÇÕES UTILITÁRIAS DE ACESSO AO CATÁLOGO
-# ==============================================================================
-
-# Dicionário indexado por ID para busca instantânea O(1)
 RESTAURANT_MAP: dict[str, Restaurant] = {rest.id: rest for rest in RESTAURANTS}
 
 
 def get_restaurant_by_id(restaurant_id: str) -> Restaurant | None:
-    """Retorna o objeto Restaurant correspondente ao ID informado."""
     return RESTAURANT_MAP.get(restaurant_id)
