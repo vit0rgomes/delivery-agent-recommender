@@ -41,6 +41,6 @@ htmlcov/
 
 # Logs & Vector DBs
 *.log
-data/
+/data/
 chroma_db/
 qdrant_storage/
